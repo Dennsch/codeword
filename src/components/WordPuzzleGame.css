@@ -240,17 +240,148 @@
   
   .encoded-letter,
   .letter-input {
-    width: 40px;
-    height: 40px;
-    line-height: 40px;
+    width: 44px; /* Minimum touch target size for mobile */
+    height: 44px;
+    line-height: 44px;
     font-size: 1.2em;
   }
   
   .guess-inputs {
-    gap: 5px;
+    gap: 8px;
   }
   
   .encoded-word {
-    gap: 5px;
+    gap: 8px;
+  }
+  
+  .evaluate-button {
+    padding: 16px 32px; /* Larger touch target */
+    font-size: 1.1em;
+  }
+  
+  .new-game-button {
+    padding: 14px 28px; /* Larger touch target */
+  }
+}
+
+/* Extra small screens (phones in portrait) */
+@media (max-width: 480px) {
+  .word-puzzle-game {
+    padding: 8px;
+  }
+  
+  .game-header {
+    padding: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .game-header h1 {
+    font-size: 1.8em;
+  }
+  
+  .instructions {
+    font-size: 1em;
+  }
+  
+  .game-content {
+    padding: 20px;
+  }
+  
+  .encoded-letter,
+  .letter-input {
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    font-size: 1.1em;
+  }
+  
+  .guess-inputs {
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  
+  .encoded-word {
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  
+  .evaluate-button {
+    padding: 14px 24px;
+    font-size: 1em;
+  }
+  
+  .message {
+    font-size: 1.1em;
+    padding: 15px;
+  }
+  
+  .game-info {
+    padding: 15px;
+  }
+  
+  .game-info ul {
+    padding-left: 15px;
+  }
+}
+
+/* Landscape orientation adjustments */
+@media (max-height: 600px) and (orientation: landscape) {
+  .word-puzzle-game {
+    min-height: auto;
+  }
+  
+  .game-header {
+    margin-bottom: 15px;
+    padding: 15px;
+  }
+  
+  .game-header h1 {
+    font-size: 1.8em;
+    margin-bottom: 5px;
+  }
+  
+  .game-content {
+    padding: 20px;
+  }
+  
+  .encoded-word-section,
+  .guess-section {
+    margin-bottom: 20px;
+  }
+  
+  .game-info {
+    padding: 15px;
+  }
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .encoded-letter,
+  .letter-input {
+    border-width: 1px;
+  }
+}
+
+/* Touch-specific improvements */
+@media (pointer: coarse) {
+  .letter-input {
+    font-size: 1.4em;
+    -webkit-tap-highlight-color: rgba(102, 126, 234, 0.2);
+  }
+  
+  .evaluate-button,
+  .new-game-button {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+  
+  .evaluate-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 10px rgba(72, 187, 120, 0.4);
+  }
+  
+  .new-game-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 10px rgba(102, 126, 234, 0.4);
   }
 }
