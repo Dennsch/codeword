@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { getRandomWord, encodeWord } from '../utils/wordCatalog';
 import './WordPuzzleGame.css';
 
@@ -19,6 +19,8 @@ const WordPuzzleGame: React.FC = () => {
     message: ''
   });
 
+  const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+
   // Initialize a new game
   const initializeGame = () => {
     const word = getRandomWord();
@@ -31,6 +33,9 @@ const WordPuzzleGame: React.FC = () => {
       gameStatus: 'playing',
       message: ''
     });
+
+    // Reset input refs
+    inputRefs.current = new Array(word.length).fill(null);
   };
 
   // Initialize game on component mount
@@ -49,6 +54,30 @@ const WordPuzzleGame: React.FC = () => {
       ...prev,
       userGuess: newGuess
     }));
+
+    // Auto-focus next input on mobile
+    if (value && index < gameState.userGuess.length - 1) {
+      const nextInput = inputRefs.current[index + 1];
+      if (nextInput) {
+        nextInput.focus();
+      }
+    }
+  };
+
+  // Handle key press for better mobile experience
+  const handleKeyPress = (index: number, event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Backspace' && !gameState.userGuess[index] && index > 0) {
+      // Move to previous input if current is empty and backspace is pressed
+      const prevInput = inputRefs.current[index - 1];
+      if (prevInput) {
+        prevInput.focus();
+      }
+    } else if (event.key === 'Enter') {
+      // Submit on Enter key
+      if (isGuessComplete) {
+        evaluateGuess();
+      }
+    }
   };
 
   // Evaluate the user's guess
@@ -63,6 +92,11 @@ const WordPuzzleGame: React.FC = () => {
         ? '🎉 Congratulations! You solved the puzzle!' 
         : `❌ Sorry! The correct word was "${gameState.currentWord.toUpperCase()}"`
     }));
+
+    // Provide haptic feedback on mobile (if available)
+    if ('vibrate' in navigator) {
+      navigator.vibrate(isCorrect ? [100, 50, 100] : [200]);
+    }
   };
 
   // Check if all input fields are filled
@@ -97,13 +131,20 @@ const WordPuzzleGame: React.FC = () => {
             {gameState.userGuess.map((letter, index) => (
               <input
                 key={index}
+                ref={(el) => (inputRefs.current[index] = el)}
                 type="text"
                 value={letter}
                 onChange={(e) => handleInputChange(index, e.target.value)}
+                onKeyDown={(e) => handleKeyPress(index, e)}
                 className="letter-input"
                 maxLength={1}
                 disabled={gameState.gameStatus !== 'playing'}
                 placeholder="?"
+                autoComplete="off"
+                autoCorrect="off"
+                autoCapitalize="off"
+                spellCheck="false"
+                inputMode="text"
               />
             ))}
           </div>
