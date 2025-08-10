@@ -1,0 +1,256 @@
+.word-puzzle-game {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Arial', sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  color: #333;
+}
+
+.game-header {
+  text-align: center;
+  margin-bottom: 30px;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.game-header h1 {
+  margin: 0 0 10px 0;
+  color: #4a5568;
+  font-size: 2.5em;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.instructions {
+  margin: 0;
+  font-size: 1.1em;
+  color: #666;
+  font-style: italic;
+}
+
+.game-content {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.encoded-word-section {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.encoded-word-section h2 {
+  color: #4a5568;
+  margin-bottom: 15px;
+  font-size: 1.5em;
+}
+
+.encoded-word {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.encoded-letter {
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  background: #e2e8f0;
+  border: 2px solid #cbd5e0;
+  border-radius: 8px;
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #2d3748;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.guess-section {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.guess-section h2 {
+  color: #4a5568;
+  margin-bottom: 15px;
+  font-size: 1.5em;
+}
+
+.guess-inputs {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.letter-input {
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  font-size: 1.5em;
+  font-weight: bold;
+  border: 2px solid #cbd5e0;
+  border-radius: 8px;
+  background: white;
+  color: #2d3748;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.letter-input:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  transform: scale(1.05);
+}
+
+.letter-input:disabled {
+  background: #f7fafc;
+  color: #a0aec0;
+  cursor: not-allowed;
+}
+
+.action-section {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.evaluate-button {
+  background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  font-size: 1.2em;
+  font-weight: bold;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(72, 187, 120, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.evaluate-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(72, 187, 120, 0.4);
+}
+
+.evaluate-button:disabled {
+  background: #a0aec0;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.message {
+  text-align: center;
+  padding: 20px;
+  border-radius: 10px;
+  font-size: 1.3em;
+  font-weight: bold;
+  margin-bottom: 20px;
+  animation: fadeIn 0.5s ease-in;
+}
+
+.message.won {
+  background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(72, 187, 120, 0.3);
+}
+
+.message.lost {
+  background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(245, 101, 101, 0.3);
+}
+
+.new-game-section {
+  text-align: center;
+}
+
+.new-game-button {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  font-size: 1.1em;
+  font-weight: bold;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.new-game-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.game-info {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  color: #4a5568;
+}
+
+.game-info p {
+  margin: 0 0 10px 0;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+.game-info ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.game-info li {
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .word-puzzle-game {
+    padding: 10px;
+  }
+  
+  .game-header h1 {
+    font-size: 2em;
+  }
+  
+  .encoded-letter,
+  .letter-input {
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    font-size: 1.2em;
+  }
+  
+  .guess-inputs {
+    gap: 5px;
+  }
+  
+  .encoded-word {
+    gap: 5px;
+  }
+}
