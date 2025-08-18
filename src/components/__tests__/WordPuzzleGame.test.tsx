@@ -59,10 +59,10 @@ describe('WordPuzzleGame', () => {
     await user.type(inputs[2], 's');
     await user.type(inputs[3], 't');
     
-    expect(inputs[0]).toHaveValue('t');
-    expect(inputs[1]).toHaveValue('e');
-    expect(inputs[2]).toHaveValue('s');
-    expect(inputs[3]).toHaveValue('t');
+    expect(inputs[0]).toHaveValue('T');
+    expect(inputs[1]).toHaveValue('E');
+    expect(inputs[2]).toHaveValue('S');
+    expect(inputs[3]).toHaveValue('T');
   });
 
   it('limits input to single characters', async () => {
@@ -72,17 +72,17 @@ describe('WordPuzzleGame', () => {
     const input = screen.getAllByRole('textbox')[0];
     
     await user.type(input, 'abc');
-    expect(input).toHaveValue('a'); // Should only keep the first character
+    expect(input).toHaveValue('A'); // Should only keep the first character (uppercase)
   });
 
-  it('converts input to lowercase', async () => {
+  it('converts input to uppercase', async () => {
     const user = userEvent.setup();
     render(<WordPuzzleGame />);
     
     const input = screen.getAllByRole('textbox')[0];
     
-    await user.type(input, 'T');
-    expect(input).toHaveValue('t');
+    await user.type(input, 't');
+    expect(input).toHaveValue('T');
   });
 
   it('disables check button when not all fields are filled', () => {
@@ -100,10 +100,10 @@ describe('WordPuzzleGame', () => {
     const checkButton = screen.getByText('Check Answer');
     
     // Fill all inputs
-    await user.type(inputs[0], 't');
-    await user.type(inputs[1], 'e');
-    await user.type(inputs[2], 's');
-    await user.type(inputs[3], 't');
+    await user.type(inputs[0], 'T');
+    await user.type(inputs[1], 'E');
+    await user.type(inputs[2], 'S');
+    await user.type(inputs[3], 'T');
     
     expect(checkButton).not.toBeDisabled();
   });
@@ -116,10 +116,10 @@ describe('WordPuzzleGame', () => {
     const checkButton = screen.getByText('Check Answer');
     
     // Fill with correct answer
-    await user.type(inputs[0], 't');
-    await user.type(inputs[1], 'e');
-    await user.type(inputs[2], 's');
-    await user.type(inputs[3], 't');
+    await user.type(inputs[0], 'T');
+    await user.type(inputs[1], 'E');
+    await user.type(inputs[2], 'S');
+    await user.type(inputs[3], 'T');
     
     await user.click(checkButton);
     
@@ -134,10 +134,10 @@ describe('WordPuzzleGame', () => {
     const checkButton = screen.getByText('Check Answer');
     
     // Fill with incorrect answer
-    await user.type(inputs[0], 'w');
-    await user.type(inputs[1], 'r');
-    await user.type(inputs[2], 'o');
-    await user.type(inputs[3], 'n');
+    await user.type(inputs[0], 'W');
+    await user.type(inputs[1], 'R');
+    await user.type(inputs[2], 'O');
+    await user.type(inputs[3], 'N');
     
     await user.click(checkButton);
     
@@ -152,10 +152,10 @@ describe('WordPuzzleGame', () => {
     const checkButton = screen.getByText('Check Answer');
     
     // Fill with correct answer
-    await user.type(inputs[0], 't');
-    await user.type(inputs[1], 'e');
-    await user.type(inputs[2], 's');
-    await user.type(inputs[3], 't');
+    await user.type(inputs[0], 'T');
+    await user.type(inputs[1], 'E');
+    await user.type(inputs[2], 'S');
+    await user.type(inputs[3], 'T');
     
     await user.click(checkButton);
     
@@ -173,10 +173,10 @@ describe('WordPuzzleGame', () => {
     const checkButton = screen.getByText('Check Answer');
     
     // Fill with correct answer
-    await user.type(inputs[0], 't');
-    await user.type(inputs[1], 'e');
-    await user.type(inputs[2], 's');
-    await user.type(inputs[3], 't');
+    await user.type(inputs[0], 'T');
+    await user.type(inputs[1], 'E');
+    await user.type(inputs[2], 'S');
+    await user.type(inputs[3], 'T');
     
     await user.click(checkButton);
     
@@ -200,10 +200,10 @@ describe('WordPuzzleGame', () => {
     const checkButton = screen.getByText('Check Answer');
     
     // Complete first game
-    await user.type(inputs[0], 't');
-    await user.type(inputs[1], 'e');
-    await user.type(inputs[2], 's');
-    await user.type(inputs[3], 't');
+    await user.type(inputs[0], 'T');
+    await user.type(inputs[1], 'E');
+    await user.type(inputs[2], 'S');
+    await user.type(inputs[3], 'T');
     await user.click(checkButton);
     
     // Click play again
@@ -231,5 +231,62 @@ describe('WordPuzzleGame', () => {
     expect(screen.getByText(/Look at the encoded word above/)).toBeInTheDocument();
     expect(screen.getByText(/Each letter has been shifted forward by 1/)).toBeInTheDocument();
     expect(screen.getByText(/For example: A becomes B, B becomes C, Z becomes A/)).toBeInTheDocument();
+  });
+
+  it('automatically focuses next input field when a character is entered', async () => {
+    const user = userEvent.setup();
+    render(<WordPuzzleGame />);
+    
+    const inputs = screen.getAllByRole('textbox');
+    
+    // Focus first input and type a character
+    inputs[0].focus();
+    await user.type(inputs[0], 'T');
+    
+    // Second input should now be focused
+    expect(inputs[1]).toHaveFocus();
+    
+    // Type in second input
+    await user.type(inputs[1], 'E');
+    
+    // Third input should now be focused
+    expect(inputs[2]).toHaveFocus();
+    
+    // Type in third input
+    await user.type(inputs[2], 'S');
+    
+    // Fourth input should now be focused
+    expect(inputs[3]).toHaveFocus();
+  });
+
+  it('does not auto-focus when typing in the last input field', async () => {
+    const user = userEvent.setup();
+    render(<WordPuzzleGame />);
+    
+    const inputs = screen.getAllByRole('textbox');
+    
+    // Focus last input and type a character
+    inputs[3].focus();
+    await user.type(inputs[3], 'T');
+    
+    // Last input should still be focused (no next input to focus)
+    expect(inputs[3]).toHaveFocus();
+  });
+
+  it('does not auto-focus when input field is cleared', async () => {
+    const user = userEvent.setup();
+    render(<WordPuzzleGame />);
+    
+    const inputs = screen.getAllByRole('textbox');
+    
+    // Type a character first
+    inputs[0].focus();
+    await user.type(inputs[0], 'T');
+    
+    // Clear the input (this should not trigger auto-focus)
+    await user.clear(inputs[0]);
+    
+    // First input should still be focused
+    expect(inputs[0]).toHaveFocus();
   });
 });

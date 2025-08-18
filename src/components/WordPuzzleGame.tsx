@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { getRandomWord, encodeWord } from '../utils/wordCatalog';
 import './WordPuzzleGame.css';
 
@@ -19,10 +19,16 @@ const WordPuzzleGame: React.FC = () => {
     message: ''
   });
 
+  // Create refs for input fields to enable auto-focus
+  const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+
   // Initialize a new game
   const initializeGame = () => {
     const word = getRandomWord();
     const encoded = encodeWord(word);
+    
+    // Reset input refs array
+    inputRefs.current = new Array(word.length).fill(null);
     
     setGameState({
       currentWord: word,
@@ -43,18 +49,26 @@ const WordPuzzleGame: React.FC = () => {
     if (value.length > 1) return; // Only allow single characters
     
     const newGuess = [...gameState.userGuess];
-    newGuess[index] = value.toLowerCase();
+    newGuess[index] = value.toUpperCase(); // Capitalize the input
     
     setGameState(prev => ({
       ...prev,
       userGuess: newGuess
     }));
+
+    // Auto-focus to next input field if a character was entered and there's a next field
+    if (value && index < gameState.userGuess.length - 1) {
+      const nextInput = inputRefs.current[index + 1];
+      if (nextInput) {
+        nextInput.focus();
+      }
+    }
   };
 
   // Evaluate the user's guess
   const evaluateGuess = () => {
     const guessedWord = gameState.userGuess.join('');
-    const isCorrect = guessedWord === gameState.currentWord;
+    const isCorrect = guessedWord === gameState.currentWord.toUpperCase(); // Compare with uppercase
     
     setGameState(prev => ({
       ...prev,
@@ -97,6 +111,7 @@ const WordPuzzleGame: React.FC = () => {
             {gameState.userGuess.map((letter, index) => (
               <input
                 key={index}
+                ref={(el) => (inputRefs.current[index] = el)}
                 type="text"
                 value={letter}
                 onChange={(e) => handleInputChange(index, e.target.value)}
