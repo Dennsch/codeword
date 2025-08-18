@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual Test - Input Capitalization and Auto-focus</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin: 10px 0;
+        }
+        .letter-input {
+            width: 40px;
+            height: 40px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+        }
+        .letter-input:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Manual Test: Input Capitalization and Auto-focus</h1>
+    
+    <div class="test-section">
+        <h2>Test 1: Basic Capitalization</h2>
+        <p>Type lowercase letters - they should appear as uppercase:</p>
+        <div class="input-group">
+            <input type="text" class="letter-input" maxlength="1" id="test1-1">
+            <input type="text" class="letter-input" maxlength="1" id="test1-2">
+            <input type="text" class="letter-input" maxlength="1" id="test1-3">
+            <input type="text" class="letter-input" maxlength="1" id="test1-4">
+        </div>
+        <div class="result" id="test1-result">Values: </div>
+    </div>
+
+    <div class="test-section">
+        <h2>Test 2: Auto-focus</h2>
+        <p>Type a letter in the first field - focus should move to the next field automatically:</p>
+        <div class="input-group">
+            <input type="text" class="letter-input" maxlength="1" id="test2-1">
+            <input type="text" class="letter-input" maxlength="1" id="test2-2">
+            <input type="text" class="letter-input" maxlength="1" id="test2-3">
+            <input type="text" class="letter-input" maxlength="1" id="test2-4">
+        </div>
+        <div class="result" id="test2-result">Values: </div>
+    </div>
+
+    <script>
+        // Test 1: Basic capitalization
+        const test1Inputs = ['test1-1', 'test1-2', 'test1-3', 'test1-4'];
+        test1Inputs.forEach((id, index) => {
+            const input = document.getElementById(id);
+            input.addEventListener('input', (e) => {
+                const value = e.target.value;
+                if (value.length > 1) {
+                    e.target.value = value.charAt(0);
+                }
+                e.target.value = e.target.value.toUpperCase();
+                updateTest1Result();
+            });
+        });
+
+        function updateTest1Result() {
+            const values = test1Inputs.map(id => document.getElementById(id).value);
+            document.getElementById('test1-result').textContent = 'Values: ' + values.join(', ');
+        }
+
+        // Test 2: Auto-focus with capitalization
+        const test2Inputs = ['test2-1', 'test2-2', 'test2-3', 'test2-4'];
+        test2Inputs.forEach((id, index) => {
+            const input = document.getElementById(id);
+            input.addEventListener('input', (e) => {
+                const value = e.target.value;
+                if (value.length > 1) {
+                    e.target.value = value.charAt(0);
+                }
+                e.target.value = e.target.value.toUpperCase();
+                
+                // Auto-focus to next input if there's a value and a next input
+                if (value && index < test2Inputs.length - 1) {
+                    const nextInput = document.getElementById(test2Inputs[index + 1]);
+                    if (nextInput) {
+                        nextInput.focus();
+                    }
+                }
+                
+                updateTest2Result();
+            });
+        });
+
+        function updateTest2Result() {
+            const values = test2Inputs.map(id => document.getElementById(id).value);
+            document.getElementById('test2-result').textContent = 'Values: ' + values.join(', ');
+        }
+
+        // Initialize results
+        updateTest1Result();
+        updateTest2Result();
+    </script>
+</body>
+</html>
